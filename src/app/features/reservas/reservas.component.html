@@ -1,0 +1,134 @@
+<app-header backRoute="/" />
+
+<main class="container">
+  <h2 class="section-title">Elegí tu Asiento</h2>
+
+  @if (destino(); as d) {
+    <p class="destino-info">{{ d.nombre }} — {{ d.fechaSalida }} {{ d.horaSalida }}</p>
+  }
+
+  @if (cargando()) {
+    <div class="loading" role="status" aria-live="polite">
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Cargando asientos...</p>
+    </div>
+  }
+
+  @if (!cargando()) {
+    <div class="bus-container">
+      <!-- Mapa del colectivo -->
+      <section aria-label="Mapa de asientos">
+        <div class="bus">
+          <div class="bus-front">
+            <div class="driver-area" aria-label="Volante del conductor">Volante</div>
+          </div>
+          <div class="bus-body" role="group" aria-label="Asientos disponibles">
+            @for (asiento of asientos(); track asiento.id) {
+              <button
+                type="button"
+                class="seat"
+                [class.available]="asiento.estado === 'DISPONIBLE' && asientoSeleccionado()?.id !== asiento.id"
+                [class.selected]="asientoSeleccionado()?.id === asiento.id"
+                [class.occupied]="asiento.estado === 'OCUPADO'"
+                [disabled]="asiento.estado === 'OCUPADO'"
+                (click)="seleccionarAsiento(asiento)"
+                [attr.aria-label]="'Asiento ' + asiento.numero + ' - ' + (asiento.estado === 'OCUPADO' ? 'Ocupado' : asientoSeleccionado()?.id === asiento.id ? 'Seleccionado' : 'Libre')"
+                [attr.aria-pressed]="asientoSeleccionado()?.id === asiento.id"
+              >
+                {{ asiento.numero }}
+              </button>
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- Panel de reserva -->
+      <aside class="booking-summary">
+        @if (reservaConfirmada()) {
+          <div class="confirmacion" role="alert">
+            <div class="check-icon" aria-hidden="true">✓</div>
+            <h3>¡Reserva Confirmada!</h3>
+            <p>Reserva #{{ reservaId() }}</p>
+            <p>Asiento <strong>#{{ asientoSeleccionado()?.numero }}</strong></p>
+            <button class="btn-primary" type="button" (click)="nuevaReserva()">
+              Reservar otro asiento
+            </button>
+            <a routerLink="/" class="btn-outline">Volver al inicio</a>
+          </div>
+        } @else {
+          <h3>Resumen</h3>
+
+          <div class="legend" aria-label="Referencias de asientos">
+            <div class="legend-item">
+              <div class="seat-legend available" aria-hidden="true"></div>
+              <span>Libre</span>
+            </div>
+            <div class="legend-item">
+              <div class="seat-legend selected" aria-hidden="true"></div>
+              <span>Seleccionado</span>
+            </div>
+            <div class="legend-item">
+              <div class="seat-legend occupied" aria-hidden="true"></div>
+              <span>Ocupado</span>
+            </div>
+          </div>
+
+          <p id="selected-seat-text" aria-live="polite">
+            @if (asientoSeleccionado()) {
+              Asiento seleccionado: <strong>#{{ asientoSeleccionado()!.numero }}</strong>
+            } @else {
+              Ningún asiento seleccionado
+            }
+          </p>
+
+          @if (asientoSeleccionado()) {
+            <form [formGroup]="form" (ngSubmit)="confirmarReserva()" class="passenger-form" aria-label="Datos del pasajero">
+              <div class="form-group">
+                <label for="nombrePasajero">Nombre completo</label>
+                <input
+                  id="nombrePasajero"
+                  type="text"
+                  formControlName="nombrePasajero"
+                  placeholder="Ej: Juan García"
+                  autocomplete="name"
+                  [attr.aria-invalid]="form.get('nombrePasajero')?.invalid && form.get('nombrePasajero')?.touched"
+                />
+                @if (form.get('nombrePasajero')?.invalid && form.get('nombrePasajero')?.touched) {
+                  <span class="field-error" role="alert">Ingresá tu nombre completo</span>
+                }
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input
+                  id="email"
+                  type="email"
+                  formControlName="email"
+                  placeholder="tu@email.com"
+                  autocomplete="email"
+                  [attr.aria-invalid]="form.get('email')?.invalid && form.get('email')?.touched"
+                />
+                @if (form.get('email')?.invalid && form.get('email')?.touched) {
+                  <span class="field-error" role="alert">Ingresá un email válido</span>
+                }
+              </div>
+
+              @if (error()) {
+                <p class="error-msg" role="alert">{{ error() }}</p>
+              }
+
+              <button
+                type="submit"
+                class="btn-primary"
+                [disabled]="!puedeConfirmar()"
+                [attr.aria-busy]="enviando()"
+              >
+                {{ enviando() ? 'Confirmando...' : 'Confirmar Reserva' }}
+              </button>
+            </form>
+          }
+        }
+      </aside>
+    </div>
+  }
+</main>

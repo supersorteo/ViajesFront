@@ -1,0 +1,72 @@
+<div
+  class="overlay"
+  [class.active]="destino() !== null"
+  (click)="cerrar.emit()"
+  aria-hidden="true"
+></div>
+
+<aside
+  class="side-panel"
+  [class.active]="destino() !== null"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-label]="destino()?.nombre ?? ''"
+>
+  @if (destino(); as d) {
+    <div class="panel-hero" [style.background-image]="heroBg(d.imagenUrl)">
+      <button class="close-btn-overlay" (click)="cerrar.emit()" aria-label="Cerrar panel">
+        &times;
+      </button>
+      <div class="panel-hero-content">
+        <span class="panel-badge">{{ d.tipo }}</span>
+        <h2>Viaje a {{ d.nombre }}</h2>
+      </div>
+    </div>
+
+    <div class="panel-body">
+      <div class="trip-details-grid">
+        <div class="detail-item">
+          <span class="detail-icon" aria-hidden="true">📅</span>
+          <div class="detail-text">
+            <small>Ida</small>
+            <strong>{{ d.fechaSalida }}</strong>
+          </div>
+        </div>
+        <div class="detail-item">
+          <span class="detail-icon" aria-hidden="true">🚌</span>
+          <div class="detail-text">
+            <small>Salida</small>
+            <strong>{{ d.horaSalida }}</strong>
+          </div>
+        </div>
+        <div class="detail-item">
+          <span class="detail-icon" aria-hidden="true">📍</span>
+          <div class="detail-text">
+            <small>Llegada</small>
+            <strong>{{ d.horaLlegada }}</strong>
+          </div>
+        </div>
+        <div class="detail-item price-highlight">
+          <span class="detail-icon" aria-hidden="true">💰</span>
+          <div class="detail-text">
+            <small>Precio Fijo</small>
+            <strong>${{ d.precio | number }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="description-box">
+        <h4>Detalles del Servicio</h4>
+        <p>{{ d.descripcion }}</p>
+      </div>
+
+      <a
+        [routerLink]="['/reservas', d.id]"
+        class="btn-primary"
+        (click)="cerrar.emit()"
+      >
+        Elegir Asiento
+      </a>
+    </div>
+  }
+</aside>

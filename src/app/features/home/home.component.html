@@ -1,0 +1,34 @@
+<app-header subtitle="Tu próximo destino a un click" />
+
+<main class="container">
+  <h2 class="section-title">Destinos Destacados</h2>
+
+  @if (cargando()) {
+    <div class="loading" role="status" aria-live="polite">
+      <div class="spinner" aria-hidden="true"></div>
+      <p>Cargando destinos...</p>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="error-message" role="alert">
+      <p>{{ error() }}</p>
+    </div>
+  }
+
+  @if (!cargando() && !error()) {
+    <div class="cards-grid">
+      @for (destino of destinos(); track destino.id) {
+        <app-destino-card
+          [destino]="destino"
+          (seleccionar)="abrirPanel($event)"
+        />
+      }
+    </div>
+  }
+</main>
+
+<app-side-panel
+  [destino]="destinoSeleccionado()"
+  (cerrar)="cerrarPanel()"
+/>
