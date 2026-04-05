@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { Destino } from '../../core/models/destino.model';
 import { DestinoService } from '../../core/services/destino.service';
 import { HeaderComponent } from '../../shared/header/header.component';
@@ -14,6 +15,7 @@ import { SidePanelComponent } from './components/side-panel/side-panel.component
 })
 export class HomeComponent implements OnInit {
   private readonly destinoService = inject(DestinoService);
+  private readonly router = inject(Router);
 
   destinos = signal<Destino[]>([]);
   destinoSeleccionado = signal<Destino | null>(null);
@@ -41,5 +43,9 @@ export class HomeComponent implements OnInit {
 
   cerrarPanel(): void {
     this.destinoSeleccionado.set(null);
+  }
+
+  goToAdmin(): void {
+    this.router.navigate(['/admin']);
   }
 }

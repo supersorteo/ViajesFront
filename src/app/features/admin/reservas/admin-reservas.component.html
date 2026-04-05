@@ -1,0 +1,93 @@
+<div class="page">
+  <div class="page-header">
+    <div>
+      <h1>Reservas</h1>
+      <p>Gestioná todas las reservas de pasajeros</p>
+    </div>
+
+    <select class="filter-select" (change)="aplicarFiltro($event)" aria-label="Filtrar por destino">
+      <option value="">Todos los destinos</option>
+      @for (d of destinos(); track d.id) {
+        <option [value]="d.id">{{ d.nombre }}</option>
+      }
+    </select>
+  </div>
+
+  @if (error()) {
+    <div class="alert-error" role="alert">{{ error() }}</div>
+  }
+
+  @if (cargando()) {
+    <div class="loading" role="status">
+      <div class="spinner"></div>
+      <span>Cargando reservas...</span>
+    </div>
+  } @else if (reservas().length === 0) {
+    <div class="empty-state">
+      <p>No hay reservas para mostrar.</p>
+    </div>
+  } @else {
+    <div class="table-wrapper">
+      <table class="data-table" aria-label="Lista de reservas">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Destino</th>
+            <th>Pasajero</th>
+            <th>Email</th>
+            <th>Asiento</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (r of reservas(); track r.id) {
+            <tr>
+              <td class="id">{{ r.id }}</td>
+              <td><strong>{{ r.destinoNombre }}</strong></td>
+              <td>{{ r.nombrePasajero }}</td>
+              <td class="email">{{ r.email }}</td>
+              <td class="center">
+                <span class="seat-badge">{{ r.numeroAsiento }}</span>
+              </td>
+              <td>
+                <select
+                  class="estado-select"
+                  [class]="estadoClass(r.estado)"
+                  [value]="r.estado"
+                  (change)="cambiarEstado(r, $any($event.target).value)"
+                  aria-label="Cambiar estado"
+                >
+                  <option value="PENDIENTE">Pendiente</option>
+                  <option value="CONFIRMADA">Confirmada</option>
+                  <option value="CANCELADA">Cancelada</option>
+                </select>
+              </td>
+              <td class="date">{{ r.fechaCreacion | slice: 0 : 10 }}</td>
+              <td>
+                <div class="actions">
+                  @if (confirmandoDelete() === r.id) {
+                    <button class="icon-btn confirm-del" (click)="eliminar(r.id)" aria-label="Confirmar">✓</button>
+                    <button class="icon-btn cancel-del" (click)="cancelarDelete()" aria-label="Cancelar">✕</button>
+                  } @else {
+                    <button class="icon-btn delete" (click)="confirmarDelete(r.id)" aria-label="Eliminar reserva">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6l-1 14H6L5 6"/>
+                        <path d="M10 11v6M14 11v6"/>
+                        <path d="M9 6V4h6v2"/>
+                      </svg>
+                    </button>
+                  }
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <p class="total-count">{{ reservas().length }} reserva{{ reservas().length !== 1 ? 's' : '' }}</p>
+  }
+</div>
