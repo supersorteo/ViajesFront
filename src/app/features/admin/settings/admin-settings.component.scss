@@ -1,29 +1,30 @@
 .page {
   padding: 2rem;
-  max-width: 640px;
+  max-width: 720px;
 }
 
 .page-header {
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
 
   h1 {
     font-size: 1.6rem;
     font-weight: 800;
-    color: #0A2463;
+    color: var(--text-strong);
     margin-bottom: 0.25rem;
   }
 
   p {
-    color: #888;
-    font-size: 0.9rem;
+    color: var(--text-soft);
+    font-size: 0.95rem;
   }
 }
 
 .settings-card {
-  background: white;
-  border-radius: 16px;
+  background: var(--surface-elevated);
+  border-radius: 20px;
   padding: 2rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--line-soft);
 }
 
 .card-title {
@@ -32,62 +33,28 @@
   gap: 0.6rem;
   font-size: 1.1rem;
   font-weight: 700;
-  color: #0A2463;
+  color: var(--text-strong);
   margin-bottom: 0.6rem;
 
   svg {
     width: 20px;
     height: 20px;
-    color: #3E92CC;
+    color: var(--brand-500);
   }
 }
 
 .card-hint {
-  font-size: 0.85rem;
-  color: #888;
+  font-size: 0.9rem;
+  color: var(--text-soft);
   margin-bottom: 1.5rem;
   line-height: 1.5;
 
   code {
-    background: #f0f2f5;
-    padding: 0.1rem 0.4rem;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.8rem;
-    color: #0A2463;
+    background: var(--surface-neutral-soft);
+    padding: 0.1rem 0.45rem;
+    border-radius: 6px;
+    color: var(--text-strong);
   }
-}
-
-.alert-success {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  background: rgba(16, 185, 129, 0.08);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  color: #047857;
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: 1.2rem;
-
-  svg { width: 18px; height: 18px; flex-shrink: 0; }
-}
-
-.alert-error {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  background: rgba(255, 51, 102, 0.08);
-  border: 1px solid rgba(255, 51, 102, 0.3);
-  color: #cc0033;
-  padding: 0.8rem 1rem;
-  border-radius: 10px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  margin-bottom: 1.2rem;
-
-  svg { width: 18px; height: 18px; flex-shrink: 0; }
 }
 
 .settings-form {
@@ -96,49 +63,10 @@
   gap: 1.2rem;
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-
-  label {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #444;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  input {
-    padding: 0.8rem 1rem;
-    border: 2px solid #e8e8e8;
-    border-radius: 10px;
-    font-size: 0.95rem;
-    font-family: inherit;
-    color: #333;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    outline: none;
-    width: 100%;
-    box-sizing: border-box;
-
-    &::placeholder { color: #bbb; }
-
-    &:focus {
-      border-color: #3E92CC;
-      box-shadow: 0 0 0 4px rgba(62, 146, 204, 0.12);
-    }
-
-    &.invalid {
-      border-color: #FF3366;
-      box-shadow: 0 0 0 4px rgba(255, 51, 102, 0.1);
-    }
-  }
-}
-
 .field-error {
   font-size: 0.8rem;
-  color: #cc0033;
-  font-weight: 500;
+  color: var(--danger-500);
+  font-weight: 600;
   padding-left: 0.2rem;
 }
 
@@ -156,22 +84,16 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #aaa;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   padding: 0.25rem;
-  border-radius: 4px;
-  transition: color 0.2s;
+  border-radius: 6px;
 
   svg { width: 20px; height: 20px; }
-
-  &:hover { color: #3E92CC; }
-
-  &:focus-visible {
-    outline: 2px solid #3E92CC;
-    outline-offset: 1px;
-  }
 }
+
+.eye-btn:hover { color: var(--brand-500); }
 
 .form-actions {
   display: flex;
@@ -181,25 +103,25 @@
 
 .btn-primary {
   padding: 0.8rem 1.8rem;
-  background: linear-gradient(135deg, #0A2463, #3E92CC);
-  color: white;
+  background: linear-gradient(135deg, var(--brand-700), var(--brand-500));
+  color: var(--text-inverse);
   border: none;
-  border-radius: 10px;
+  border-radius: 14px;
   font-size: 0.95rem;
   font-weight: 700;
-  font-family: inherit;
-  cursor: pointer;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 18px 36px rgba(47, 117, 255, 0.28);
+}
 
-  &:hover:not([disabled]) {
-    opacity: 0.92;
-    transform: translateY(-1px);
-  }
+.btn-primary:hover:not([disabled]) {
+  transform: translateY(-1px);
+}
 
-  &[disabled] { opacity: 0.6; cursor: not-allowed; }
+.btn-primary[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .spinner {

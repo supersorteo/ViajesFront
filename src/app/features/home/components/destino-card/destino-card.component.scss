@@ -3,33 +3,33 @@
 }
 
 .card {
-  background: var(--surface);
-  border-radius: var(--radius);
+  background: var(--surface-elevated);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-lg);
   cursor: pointer;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--line-soft);
   position: relative;
   display: flex;
   flex-direction: row;
   min-height: 220px;
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
-    box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: transform var(--ease-out), box-shadow var(--ease-out), border-color var(--ease-out);
+}
 
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-  }
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--border-strong);
+}
 
-  &:focus-visible {
-    outline: 3px solid var(--secondary);
-    outline-offset: 2px;
-  }
+.card:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--brand-500) 70%, transparent);
+  outline-offset: 2px;
+}
 
-  &:hover .btn-outline {
-    background: var(--accent);
-    color: white;
-  }
+.card:hover .btn-outline {
+  background: var(--accent);
+  color: var(--text-inverse);
 }
 
 .card-image {
@@ -37,7 +37,7 @@
   flex-shrink: 0;
   background-size: cover;
   background-position: center;
-  background-color: #ddd;
+  background-color: var(--surface-neutral-soft);
 }
 
 .card-content {
@@ -50,13 +50,14 @@
   h3 {
     font-size: 1.8rem;
     margin-bottom: 0.5rem;
-    color: var(--primary);
+    color: var(--text-strong);
   }
 
   p {
-    color: #666;
+    color: var(--text-soft);
     margin-bottom: 1.5rem;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
   }
 }
 
@@ -64,13 +65,13 @@
   position: absolute;
   top: 20px;
   right: 20px;
-  background: var(--accent);
-  color: white;
-  padding: 0.5rem 1.2rem;
+  background: linear-gradient(135deg, var(--accent-500), var(--accent-300));
+  color: var(--text-inverse);
+  padding: 0.55rem 1.2rem;
   border-radius: 30px;
   font-weight: 800;
-  font-size: 1.2rem;
-  box-shadow: 0 4px 15px rgba(255, 51, 102, 0.4);
+  font-size: 1.05rem;
+  box-shadow: 0 8px 24px rgba(255, 107, 87, 0.24);
   z-index: 10;
 }
 
@@ -78,11 +79,11 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: #e8f1f2;
+  background: var(--surface-accent-soft);
   padding: 6px 16px;
   border-radius: 20px;
   margin-bottom: 1rem;
-  color: var(--primary);
+  color: var(--text-strong);
   font-weight: 600;
   align-self: flex-start;
 }
@@ -90,7 +91,7 @@
 .date-day {
   font-size: 1.4rem;
   font-weight: 800;
-  color: var(--secondary);
+  color: var(--brand-500);
 }
 
 .date-month {
@@ -100,8 +101,8 @@
 }
 
 .date-time {
-  background: var(--primary);
-  color: white;
+  background: color-mix(in srgb, var(--brand-700) 90%, black 10%);
+  color: var(--text-inverse);
   padding: 3px 12px;
   border-radius: 12px;
   font-size: 0.85rem;
@@ -113,10 +114,10 @@
   color: var(--accent);
   padding: 0.6rem 1.2rem;
   border-radius: 20px;
-  font-weight: 600;
-  font-size: 1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: background var(--ease-out), color var(--ease-out), transform var(--ease-out);
   align-self: flex-start;
 }
 
@@ -127,6 +128,10 @@
 
   .card-image {
     width: 100%;
-    height: 200px;
+    height: 220px;
+  }
+
+  .card-content {
+    padding: 1.25rem;
   }
 }
