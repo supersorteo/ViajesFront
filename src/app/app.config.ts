@@ -5,6 +5,7 @@ import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 import { routes } from './app.routes';
 
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),

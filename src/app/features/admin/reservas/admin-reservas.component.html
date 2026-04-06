@@ -1,8 +1,9 @@
-<div class="page">
-  <div class="page-header">
+<div class="page page-shell">
+  <div class="page-header glass-card">
     <div>
+      <span class="eyebrow">Seguimiento</span>
       <h1>Reservas</h1>
-      <p>Gestioná todas las reservas de pasajeros</p>
+      <p>Controla estados, revisa ocupacion y elimina reservas con confirmacion segura.</p>
     </div>
 
     <select class="filter-select" (change)="aplicarFiltro($event)" aria-label="Filtrar por destino">
@@ -18,16 +19,16 @@
   }
 
   @if (cargando()) {
-    <div class="loading" role="status">
+    <div class="loading glass-card" role="status">
       <div class="spinner"></div>
       <span>Cargando reservas...</span>
     </div>
   } @else if (reservas().length === 0) {
-    <div class="empty-state">
-      <p>No hay reservas para mostrar.</p>
+    <div class="empty-state glass-card">
+      <p>No hay reservas para mostrar con el filtro actual.</p>
     </div>
   } @else {
-    <div class="table-wrapper">
+    <div class="table-wrapper glass-card">
       <table class="data-table" aria-label="Lista de reservas">
         <thead>
           <tr>
@@ -67,19 +68,14 @@
               <td class="date">{{ r.fechaCreacion | slice: 0 : 10 }}</td>
               <td>
                 <div class="actions">
-                  @if (confirmandoDelete() === r.id) {
-                    <button class="icon-btn confirm-del" (click)="eliminar(r.id)" aria-label="Confirmar">✓</button>
-                    <button class="icon-btn cancel-del" (click)="cancelarDelete()" aria-label="Cancelar">✕</button>
-                  } @else {
-                    <button class="icon-btn delete" (click)="confirmarDelete(r.id)" aria-label="Eliminar reserva">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"/>
-                        <path d="M19 6l-1 14H6L5 6"/>
-                        <path d="M10 11v6M14 11v6"/>
-                        <path d="M9 6V4h6v2"/>
-                      </svg>
-                    </button>
-                  }
+                  <button class="icon-btn delete" (click)="eliminar(r)" aria-label="Eliminar reserva">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"/>
+                      <path d="M19 6l-1 14H6L5 6"/>
+                      <path d="M10 11v6M14 11v6"/>
+                      <path d="M9 6V4h6v2"/>
+                    </svg>
+                  </button>
                 </div>
               </td>
             </tr>

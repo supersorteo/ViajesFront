@@ -1,4 +1,4 @@
-export type AsientoEstado = 'DISPONIBLE' | 'OCUPADO';
+export type AsientoEstado = 'DISPONIBLE' | 'OCUPADO' | 'INACTIVO';
 
 export interface Asiento {
   id: number;

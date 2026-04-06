@@ -1,14 +1,19 @@
 <app-header backRoute="/" />
 
-<main class="container">
-  <h2 class="section-title">Elegí tu Asiento</h2>
-
-  @if (destino(); as d) {
-    <p class="destino-info">{{ d.nombre }} — {{ d.fechaSalida }} {{ d.horaSalida }}</p>
-  }
+<main class="container booking-page">
+  <section class="booking-hero">
+    <div>
+      <span class="eyebrow">Reserva inteligente</span>
+      <h2 class="section-title">Elige tu asiento</h2>
+      @if (destino(); as d) {
+        <p class="destino-info">{{ d.nombre }} · {{ d.fechaSalida }} · salida {{ d.horaSalida }}</p>
+      }
+    </div>
+    <div class="booking-pill">Actualizacion automatica cada 10 segundos</div>
+  </section>
 
   @if (cargando()) {
-    <div class="loading" role="status" aria-live="polite">
+    <div class="loading glass-card" role="status" aria-live="polite">
       <div class="spinner" aria-hidden="true"></div>
       <p>Cargando asientos...</p>
     </div>
@@ -16,11 +21,10 @@
 
   @if (!cargando()) {
     <div class="bus-container">
-      <!-- Mapa del colectivo -->
-      <section aria-label="Mapa de asientos">
+      <section class="glass-card bus-stage" aria-label="Mapa de asientos">
         <div class="bus">
           <div class="bus-front">
-            <div class="driver-area" aria-label="Volante del conductor">Volante</div>
+            <div class="driver-area" aria-label="Area del conductor">Conductor</div>
           </div>
           <div class="bus-body" role="group" aria-label="Asientos disponibles">
             @for (asiento of asientos(); track asiento.id) {
@@ -30,9 +34,10 @@
                 [class.available]="asiento.estado === 'DISPONIBLE' && asientoSeleccionado()?.id !== asiento.id"
                 [class.selected]="asientoSeleccionado()?.id === asiento.id"
                 [class.occupied]="asiento.estado === 'OCUPADO'"
-                [disabled]="asiento.estado === 'OCUPADO'"
+                [class.inactive]="asiento.estado === 'INACTIVO'"
+                [disabled]="asiento.estado !== 'DISPONIBLE'"
                 (click)="seleccionarAsiento(asiento)"
-                [attr.aria-label]="'Asiento ' + asiento.numero + ' - ' + (asiento.estado === 'OCUPADO' ? 'Ocupado' : asientoSeleccionado()?.id === asiento.id ? 'Seleccionado' : 'Libre')"
+                [attr.aria-label]="asientoLabel(asiento)"
                 [attr.aria-pressed]="asientoSeleccionado()?.id === asiento.id"
               >
                 {{ asiento.numero }}
@@ -42,21 +47,20 @@
         </div>
       </section>
 
-      <!-- Panel de reserva -->
-      <aside class="booking-summary">
+      <aside class="booking-summary glass-card">
         @if (reservaConfirmada()) {
           <div class="confirmacion" role="alert">
             <div class="check-icon" aria-hidden="true">✓</div>
-            <h3>¡Reserva Confirmada!</h3>
+            <h3>Reserva confirmada</h3>
             <p>Reserva #{{ reservaId() }}</p>
             <p>Asiento <strong>#{{ asientoSeleccionado()?.numero }}</strong></p>
-            <button class="btn-primary" type="button" (click)="nuevaReserva()">
+            <button class="btn-shell" type="button" (click)="nuevaReserva()">
               Reservar otro asiento
             </button>
-            <a routerLink="/" class="btn-outline">Volver al inicio</a>
+            <a routerLink="/" class="btn-shell btn-shell-secondary">Volver al inicio</a>
           </div>
         } @else {
-          <h3>Resumen</h3>
+          <h3>Resumen del viaje</h3>
 
           <div class="legend" aria-label="Referencias de asientos">
             <div class="legend-item">
@@ -69,7 +73,11 @@
             </div>
             <div class="legend-item">
               <div class="seat-legend occupied" aria-hidden="true"></div>
-              <span>Ocupado</span>
+              <span>Reservado</span>
+            </div>
+            <div class="legend-item">
+              <div class="seat-legend inactive" aria-hidden="true"></div>
+              <span>Inactivo</span>
             </div>
           </div>
 
@@ -77,7 +85,7 @@
             @if (asientoSeleccionado()) {
               Asiento seleccionado: <strong>#{{ asientoSeleccionado()!.numero }}</strong>
             } @else {
-              Ningún asiento seleccionado
+              Elige un asiento libre para continuar
             }
           </p>
 
@@ -89,17 +97,17 @@
                   id="nombrePasajero"
                   type="text"
                   formControlName="nombrePasajero"
-                  placeholder="Ej: Juan García"
+                  placeholder="Ej: Juan Garcia"
                   autocomplete="name"
                   [attr.aria-invalid]="form.get('nombrePasajero')?.invalid && form.get('nombrePasajero')?.touched"
                 />
                 @if (form.get('nombrePasajero')?.invalid && form.get('nombrePasajero')?.touched) {
-                  <span class="field-error" role="alert">Ingresá tu nombre completo</span>
+                  <span class="field-error" role="alert">Ingresa tu nombre completo</span>
                 }
               </div>
 
               <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">Correo electronico</label>
                 <input
                   id="email"
                   type="email"
@@ -109,7 +117,7 @@
                   [attr.aria-invalid]="form.get('email')?.invalid && form.get('email')?.touched"
                 />
                 @if (form.get('email')?.invalid && form.get('email')?.touched) {
-                  <span class="field-error" role="alert">Ingresá un email válido</span>
+                  <span class="field-error" role="alert">Ingresa un correo valido</span>
                 }
               </div>
 
@@ -119,11 +127,11 @@
 
               <button
                 type="submit"
-                class="btn-primary"
+                class="btn-shell"
                 [disabled]="!puedeConfirmar()"
                 [attr.aria-busy]="enviando()"
               >
-                {{ enviando() ? 'Confirmando...' : 'Confirmar Reserva' }}
+                {{ enviando() ? 'Confirmando...' : 'Confirmar reserva' }}
               </button>
             </form>
           }

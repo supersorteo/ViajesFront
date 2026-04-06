@@ -17,6 +17,12 @@ export interface DestinoRequest {
   totalAsientos: number;
 }
 
+export interface ResetAsientosResponse {
+  totalAsientos: number;
+  asientosDisponibles: number;
+  reservasEliminadas: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AdminDestinoService {
   private readonly http = inject(HttpClient);
@@ -42,7 +48,7 @@ export class AdminDestinoService {
     return this.http.patch<Destino>(`${this.apiUrl}/${id}/disponible`, {});
   }
 
-  resetearAsientos(id: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/${id}/resetear-asientos`, {});
+  resetearAsientos(id: number): Observable<ResetAsientosResponse> {
+    return this.http.post<ResetAsientosResponse>(`${this.apiUrl}/${id}/resetear-asientos`, {});
   }
 }

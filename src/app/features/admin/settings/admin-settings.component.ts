@@ -12,6 +12,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
+import { ToastService } from '../../../shared/ui/toast.service';
+import { ConfirmService } from '../../../shared/ui/confirm.service';
 
 const passwordMatchValidator: ValidatorFn = (group: AbstractControl) => {
   const pass = group.get('nuevaPassword')?.value;
@@ -29,6 +31,8 @@ const passwordMatchValidator: ValidatorFn = (group: AbstractControl) => {
 export class AdminSettingsComponent {
   private readonly fb = inject(FormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly toastService = inject(ToastService);
+  private readonly confirmService = inject(ConfirmService);
 
   guardando = signal(false);
   exito = signal(false);
@@ -47,11 +51,18 @@ export class AdminSettingsComponent {
 
   get usernameCtrl() { return this.form.get('nuevoUsername')!; }
   get passwordCtrl() { return this.form.get('nuevaPassword')!; }
-  get confirmCtrl()  { return this.form.get('confirmarPassword')!; }
+  get confirmCtrl() { return this.form.get('confirmarPassword')!; }
 
-  guardar(): void {
+  async guardar(): Promise<void> {
     this.form.markAllAsTouched();
     if (this.form.invalid || this.guardando()) return;
+
+    const confirmado = await this.confirmService.open({
+      title: 'Actualizar credenciales',
+      message: 'El panel usara el nuevo usuario y la nueva contrasena apenas confirmes el cambio.',
+      confirmText: 'Guardar credenciales',
+    });
+    if (!confirmado) return;
 
     this.guardando.set(true);
     this.error.set(null);
@@ -63,10 +74,12 @@ export class AdminSettingsComponent {
         this.exito.set(true);
         this.form.reset();
         this.guardando.set(false);
+        this.toastService.success('Credenciales actualizadas', 'El panel ya usa los nuevos datos.');
       },
       error: () => {
-        this.error.set('Error al actualizar las credenciales. Intentá de nuevo.');
+        this.error.set('Error al actualizar las credenciales. Intenta de nuevo.');
         this.guardando.set(false);
+        this.toastService.error('No se pudieron actualizar las credenciales.');
       },
     });
   }

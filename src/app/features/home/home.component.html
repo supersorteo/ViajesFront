@@ -1,17 +1,33 @@
-<app-header subtitle="Tu próximo destino a un click" />
+<app-header subtitle="Tu proximo destino a un click" />
 
 <main class="container">
-  <h2 class="section-title">Destinos Destacados</h2>
+  <section class="hero-strip glass-card">
+    <div>
+      <span class="eyebrow">Experiencias destacadas</span>
+      <h2 class="section-title">Destinos listos para reservar</h2>
+      <p>Explora rutas con una presentacion mas clara, responsive y preparada para reservar desde cualquier pantalla.</p>
+    </div>
+    <div class="hero-strip-stats">
+      <div>
+        <strong>{{ destinos().length }}</strong>
+        <span>destinos visibles</span>
+      </div>
+      <div>
+        <strong>Admin</strong>
+        <span>acceso rapido</span>
+      </div>
+    </div>
+  </section>
 
   @if (cargando()) {
-    <div class="loading" role="status" aria-live="polite">
+    <div class="loading glass-card" role="status" aria-live="polite">
       <div class="spinner" aria-hidden="true"></div>
       <p>Cargando destinos...</p>
     </div>
   }
 
   @if (error()) {
-    <div class="error-message" role="alert">
+    <div class="error-message glass-card" role="alert">
       <p>{{ error() }}</p>
     </div>
   }
@@ -36,8 +52,8 @@
 <button
   class="admin-access-btn"
   (click)="goToAdmin()"
-  aria-label="Acceder al panel de administración"
-  title="Panel de administración"
+  aria-label="Acceder al panel de administracion"
+  title="Panel de administracion"
 >
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
     <path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7L12 2z"

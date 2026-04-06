@@ -1,16 +1,16 @@
-<div class="page">
-  <!-- Header -->
-  <div class="page-header">
+<div class="page page-shell">
+  <div class="page-header glass-card">
     <div>
+      <span class="eyebrow">Panel de control</span>
       <h1>Destinos</h1>
-      <p>Gestioná los destinos de viaje disponibles</p>
+      <p>Gestiona viajes, disponibilidad, imagenes y reseteos de asientos desde un solo lugar.</p>
     </div>
-    <button class="btn-primary" (click)="abrirFormNuevo()">
+    <button class="btn-shell add-destination-btn" (click)="abrirFormNuevo()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
         <line x1="12" y1="5" x2="12" y2="19"/>
         <line x1="5" y1="12" x2="19" y2="12"/>
       </svg>
-      Nuevo Destino
+      <span>Nuevo destino</span>
     </button>
   </div>
 
@@ -18,18 +18,17 @@
     <div class="alert-error" role="alert">{{ error() }}</div>
   }
 
-  <!-- Table -->
   @if (cargando()) {
-    <div class="loading" role="status">
+    <div class="loading glass-card" role="status">
       <div class="spinner"></div>
       <span>Cargando destinos...</span>
     </div>
   } @else if (destinos().length === 0) {
-    <div class="empty-state">
-      <p>No hay destinos cargados. ¡Creá el primero!</p>
+    <div class="empty-state glass-card">
+      <p>No hay destinos cargados todavia. Crea el primero desde el panel.</p>
     </div>
   } @else {
-    <div class="table-wrapper">
+    <div class="table-wrapper glass-card">
       <table class="data-table" aria-label="Lista de destinos">
         <thead>
           <tr>
@@ -50,12 +49,12 @@
                 @if (d.imagenUrl) {
                   <img [src]="d.imagenUrl" [alt]="d.nombre" class="thumb" loading="lazy" />
                 } @else {
-                  <div class="thumb-placeholder" aria-hidden="true">📷</div>
+                  <div class="thumb-placeholder" aria-hidden="true">IMG</div>
                 }
               </td>
               <td>
                 <strong>{{ d.nombre }}</strong>
-                <span class="sub-text">{{ d.descripcion | slice: 0 : 50 }}...</span>
+                <span class="sub-text">{{ d.descripcion | slice: 0 : 64 }}...</span>
               </td>
               <td class="price">${{ d.precio | number }}</td>
               <td>{{ d.fechaSalida }}</td>
@@ -65,7 +64,7 @@
                   class="toggle-btn"
                   [class.active]="d.disponible"
                   (click)="toggleDisponible(d)"
-                  [attr.aria-label]="d.disponible ? 'Desactivar' : 'Activar'"
+                  [attr.aria-label]="d.disponible ? 'Desactivar destino' : 'Activar destino'"
                 >
                   {{ d.disponible ? 'Activo' : 'Inactivo' }}
                 </button>
@@ -79,25 +78,20 @@
                       <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
                     </svg>
                   </button>
-                  <button class="icon-btn reset" (click)="resetearAsientos(d.id)" aria-label="Resetear asientos">
+                  <button class="icon-btn reset" (click)="resetearAsientos(d)" aria-label="Resetear asientos">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                       <polyline points="1 4 1 10 7 10"/>
                       <path d="M3.51 15a9 9 0 1 0 .49-3.51"/>
                     </svg>
                   </button>
-                  @if (confirmandoDelete() === d.id) {
-                    <button class="icon-btn confirm-del" (click)="eliminar(d.id)" aria-label="Confirmar eliminación">✓</button>
-                    <button class="icon-btn cancel-del" (click)="cancelarDelete()" aria-label="Cancelar">✕</button>
-                  } @else {
-                    <button class="icon-btn delete" (click)="confirmarDelete(d.id)" aria-label="Eliminar destino">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"/>
-                        <path d="M19 6l-1 14H6L5 6"/>
-                        <path d="M10 11v6M14 11v6"/>
-                        <path d="M9 6V4h6v2"/>
-                      </svg>
-                    </button>
-                  }
+                  <button class="icon-btn delete" (click)="eliminar(d)" aria-label="Eliminar destino">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"/>
+                      <path d="M19 6l-1 14H6L5 6"/>
+                      <path d="M10 11v6M14 11v6"/>
+                      <path d="M9 6V4h6v2"/>
+                    </svg>
+                  </button>
                 </div>
               </td>
             </tr>
@@ -108,13 +102,15 @@
   }
 </div>
 
-<!-- Form panel -->
 @if (mostrarForm()) {
   <div class="overlay" (click)="cerrarForm()" aria-hidden="true"></div>
   <aside class="form-panel" role="dialog" aria-modal="true" [attr.aria-label]="tituloForm()">
     <div class="form-panel-header">
-      <h2>{{ tituloForm() }}</h2>
-      <button class="close-btn" (click)="cerrarForm()" aria-label="Cerrar formulario">✕</button>
+      <div>
+        <span class="eyebrow">{{ editando() ? 'Edicion' : 'Creacion' }}</span>
+        <h2>{{ tituloForm() }}</h2>
+      </div>
+      <button class="close-btn" (click)="cerrarForm()" aria-label="Cerrar formulario">×</button>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="guardar()" class="dest-form" novalidate>
@@ -124,11 +120,11 @@
 
       <div class="form-row">
         <div class="field">
-          <label for="nombre">Nombre *</label>
-          <input id="nombre" type="text" formControlName="nombre" placeholder="Ej: Mar del Plata" />
+          <label for="nombre">Nombre</label>
+          <input id="nombre" type="text" formControlName="nombre" placeholder="Ej: Santiago de Cuba" />
         </div>
         <div class="field">
-          <label for="tipo">Tipo *</label>
+          <label for="tipo">Tipo</label>
           <select id="tipo" formControlName="tipo">
             <option value="Ida y Vuelta">Ida y Vuelta</option>
             <option value="Especial">Especial</option>
@@ -137,19 +133,19 @@
         </div>
       </div>
 
-      <div class="field">
-        <label for="descripcion">Descripción *</label>
-        <textarea id="descripcion" formControlName="descripcion" rows="3" placeholder="Descripción del viaje..."></textarea>
+      <div class="field field-full">
+        <label for="descripcion">Descripcion</label>
+        <textarea id="descripcion" formControlName="descripcion" rows="4" placeholder="Describe la experiencia del viaje..."></textarea>
       </div>
 
-      <div class="field">
+      <div class="field field-full">
         <label>Imagen del destino</label>
         <div class="image-upload-area">
           @if (imagenPreview() || form.get('imagenUrl')?.value) {
             <div class="image-preview-box">
               <img
                 [src]="imagenPreview() || form.get('imagenUrl')?.value"
-                alt="Vista previa"
+                alt="Vista previa del destino"
                 loading="lazy"
               />
             </div>
@@ -185,18 +181,18 @@
 
       <div class="form-row">
         <div class="field">
-          <label for="precio">Precio ($) *</label>
+          <label for="precio">Precio</label>
           <input id="precio" type="number" formControlName="precio" placeholder="0" min="1" />
         </div>
         <div class="field">
-          <label for="totalAsientos">Total asientos *</label>
+          <label for="totalAsientos">Total de asientos</label>
           <input id="totalAsientos" type="number" formControlName="totalAsientos" min="1" max="100" />
         </div>
       </div>
 
       <div class="form-row">
         <div class="field">
-          <label for="fechaSalida">Fecha de salida *</label>
+          <label for="fechaSalida">Fecha de salida</label>
           <input id="fechaSalida" type="date" formControlName="fechaSalida" />
         </div>
         <div class="field">
@@ -213,19 +209,19 @@
 
       <div class="form-row">
         <div class="field">
-          <label for="horaSalida">Hora salida *</label>
+          <label for="horaSalida">Hora de salida</label>
           <input id="horaSalida" type="time" formControlName="horaSalida" />
         </div>
         <div class="field">
-          <label for="horaLlegada">Hora llegada *</label>
+          <label for="horaLlegada">Hora de llegada</label>
           <input id="horaLlegada" type="time" formControlName="horaLlegada" />
         </div>
       </div>
 
       <div class="form-actions">
-        <button type="button" class="btn-secondary" (click)="cerrarForm()">Cancelar</button>
-        <button type="submit" class="btn-primary" [disabled]="form.invalid || guardando()">
-          @if (guardando()) { Guardando... } @else { Guardar }
+        <button type="button" class="btn-shell btn-shell-secondary" (click)="cerrarForm()">Cancelar</button>
+        <button type="submit" class="btn-shell" [disabled]="form.invalid || guardando()">
+          @if (guardando()) { Guardando... } @else { Guardar destino }
         </button>
       </div>
     </form>
