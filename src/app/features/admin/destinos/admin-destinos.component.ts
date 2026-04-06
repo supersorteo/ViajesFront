@@ -256,8 +256,10 @@ export class AdminDestinosComponent implements OnInit {
         this.toastService.success('Destino eliminado', destino.nombre);
       },
       error: () => {
-        this.error.set('No se puede eliminar un destino con reservas activas.');
-        this.toastService.error('No se puede eliminar el destino con reservas activas.');
+        this.toastService.error(
+          'No se puede eliminar el destino',
+          'Tiene reservas activas. Si deseas borrarlo, primero resetea los asientos para eliminar esas reservas.'
+        );
       },
     });
   }
