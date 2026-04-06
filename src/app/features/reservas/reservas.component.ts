@@ -8,7 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { interval } from 'rxjs';
 import { Destino } from '../../core/models/destino.model';
@@ -21,7 +21,7 @@ import { ToastService } from '../../shared/ui/toast.service';
 
 @Component({
   selector: 'app-reservas',
-  imports: [HeaderComponent, RouterLink, ReactiveFormsModule],
+  imports: [HeaderComponent, ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './reservas.component.html',
   styleUrl: './reservas.component.scss',
@@ -120,6 +120,10 @@ export class ReservasComponent implements OnInit {
     this.reservaConfirmada.set(false);
     this.asientoSeleccionado.set(null);
     this.form.reset();
+  }
+
+  volverAlInicio(): void {
+    this.router.navigate(['/']);
   }
 
   asientoLabel(asiento: Asiento): string {
