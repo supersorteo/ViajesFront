@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { Destino } from '../../core/models/destino.model';
 import { DestinoService } from '../../core/services/destino.service';
@@ -8,7 +9,7 @@ import { SidePanelComponent } from './components/side-panel/side-panel.component
 
 @Component({
   selector: 'app-home',
-  imports: [HeaderComponent, DestinoCardComponent, SidePanelComponent],
+  imports: [HeaderComponent, DestinoCardComponent, SidePanelComponent, DecimalPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -21,6 +22,18 @@ export class HomeComponent implements OnInit {
   destinoSeleccionado = signal<Destino | null>(null);
   cargando = signal(true);
   error = signal<string | null>(null);
+  destinosDisponibles = computed(() => this.destinos().filter((destino) => destino.disponible));
+  cantidadDestinosDisponibles = computed(() => this.destinosDisponibles().length);
+  salidaMasEconomica = computed(() => {
+    const disponibles = this.destinosDisponibles();
+    if (!disponibles.length) {
+      return null;
+    }
+
+    return disponibles.reduce((mejor, actual) =>
+      actual.precio < mejor.precio ? actual : mejor
+    );
+  });
 
   ngOnInit(): void {
     this.destinoService.getAll().subscribe({
@@ -47,5 +60,9 @@ export class HomeComponent implements OnInit {
 
   goToAdmin(): void {
     this.router.navigate(['/admin']);
+  }
+
+  scrollToSection(sectionId: string): void {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }

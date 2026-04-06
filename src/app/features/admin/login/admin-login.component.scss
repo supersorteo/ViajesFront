@@ -28,13 +28,51 @@
 .back-home:hover { color: var(--text-inverse); }
 
 .login-card {
+  position: relative;
   background: var(--surface-strong);
   border-radius: 24px;
   padding: 3rem;
   width: 100%;
   max-width: 440px;
   box-shadow: var(--shadow-xl);
-  border: 1px solid var(--line-soft);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 3px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--brand-300) 82%, white 18%),
+    var(--brand-500) 30%,
+    var(--accent-300) 68%,
+    color-mix(in srgb, var(--accent-500) 84%, white 16%)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.98;
+}
+
+:root[data-theme='dark'] .login-card::before,
+body[data-theme='dark'] .login-card::before {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--brand-300) 72%, white 28%),
+    color-mix(in srgb, var(--brand-500) 80%, white 20%) 30%,
+    color-mix(in srgb, var(--accent-300) 86%, white 14%) 68%,
+    color-mix(in srgb, var(--accent-500) 82%, white 18%)
+  );
 }
 
 .login-brand {
@@ -147,4 +185,45 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .login-page {
+    align-items: stretch;
+    padding: 4.75rem 0.85rem 1rem;
+  }
+
+  .back-home {
+    top: 0.85rem;
+    left: 0.85rem;
+    padding: 0.55rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+  }
+
+  .login-card {
+    max-width: none;
+    padding: 1.4rem;
+    border-radius: 20px;
+  }
+
+  .login-brand {
+    margin-bottom: 1.5rem;
+  }
+
+  .login-brand .brand-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 0.95rem;
+  }
+
+  .login-brand .brand-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  .login-brand h1 {
+    font-size: 1.4rem;
+  }
 }

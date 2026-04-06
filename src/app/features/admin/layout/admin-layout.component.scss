@@ -6,6 +6,11 @@
     linear-gradient(180deg, color-mix(in srgb, var(--bg-color) 92%, white 8%) 0%, var(--bg-color) 100%);
 }
 
+.mobile-admin-bar,
+.sidebar-overlay {
+  display: none;
+}
+
 .sidebar {
   width: 270px;
   min-height: 100vh;
@@ -171,16 +176,81 @@
     display: block;
   }
 
-  .sidebar {
+  .mobile-admin-bar {
     position: sticky;
-    width: auto;
-    min-height: auto;
+    top: 0.75rem;
+    z-index: 95;
+    margin: 0.75rem 0.75rem 0;
+    padding: 0.7rem 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .menu-toggle {
+    width: 2.7rem;
+    height: 2.7rem;
+    border: 1px solid var(--line-soft);
+    border-radius: 16px;
+    background: var(--surface-elevated);
+    color: var(--text-strong);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+
+  .menu-toggle svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .mobile-admin-copy {
+    min-width: 0;
+    display: grid;
+  }
+
+  .mobile-admin-copy strong {
+    color: var(--text-strong);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.96rem;
+  }
+
+  .mobile-admin-copy span {
+    color: var(--text-soft);
+    font-size: 0.82rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-logout {
+    margin-left: auto;
+    background: var(--surface-danger-soft);
+    color: var(--danger-500);
+  }
+
+  .sidebar-overlay.active {
+    display: block;
+    position: fixed;
     inset: 0;
-    margin: 0;
+    z-index: 98;
+    background: rgba(4, 11, 23, 0.54);
+    backdrop-filter: blur(6px);
+  }
+
+  .sidebar {
+    width: min(20rem, calc(100vw - 2rem));
+    z-index: 99;
+    transform: translateX(-104%);
+    transition: transform var(--ease-out);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
   }
 
   .sidebar-nav {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 
   .admin-main {
@@ -190,11 +260,22 @@
 }
 
 @media (max-width: 640px) {
-  .sidebar-nav {
-    grid-template-columns: 1fr;
+  .mobile-admin-bar {
+    top: 0.5rem;
+    margin: 0.5rem 0.5rem 0;
+    padding: 0.65rem 0.7rem;
   }
 
   .sidebar-footer {
     flex-wrap: wrap;
+  }
+
+  .sidebar {
+    width: min(18.5rem, calc(100vw - 1rem));
+    padding: 0.85rem;
+  }
+
+  .admin-main {
+    padding: 0.75rem;
   }
 }

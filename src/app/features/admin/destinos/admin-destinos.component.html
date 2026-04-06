@@ -45,21 +45,21 @@
         <tbody>
           @for (d of destinos(); track d.id) {
             <tr>
-              <td>
+              <td data-label="Imagen">
                 @if (d.imagenUrl) {
                   <img [src]="d.imagenUrl" [alt]="d.nombre" class="thumb" loading="lazy" />
                 } @else {
                   <div class="thumb-placeholder" aria-hidden="true">IMG</div>
                 }
               </td>
-              <td>
+              <td data-label="Destino">
                 <strong>{{ d.nombre }}</strong>
                 <span class="sub-text">{{ d.descripcion | slice: 0 : 64 }}...</span>
               </td>
-              <td class="price">${{ d.precio | number }}</td>
-              <td>{{ d.fechaSalida }}</td>
-              <td><span class="badge">{{ d.tipo }}</span></td>
-              <td>
+              <td class="price" data-label="Precio">${{ d.precio | number }}</td>
+              <td data-label="Fecha salida">{{ d.fechaSalida }}</td>
+              <td data-label="Tipo"><span class="badge">{{ d.tipo }}</span></td>
+              <td data-label="Estado">
                 <button
                   class="toggle-btn"
                   [class.active]="d.disponible"
@@ -69,8 +69,8 @@
                   {{ d.disponible ? 'Activo' : 'Inactivo' }}
                 </button>
               </td>
-              <td class="center">{{ d.totalAsientos }}</td>
-              <td>
+              <td class="center" data-label="Asientos">{{ d.totalAsientos }}</td>
+              <td data-label="Acciones">
                 <div class="actions">
                   <button class="icon-btn edit" (click)="abrirFormEditar(d)" aria-label="Editar destino">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

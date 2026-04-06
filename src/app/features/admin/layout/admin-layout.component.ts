@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ConfirmService } from '../../../shared/ui/confirm.service';
@@ -17,6 +17,15 @@ export class AdminLayoutComponent {
   private readonly toastService = inject(ToastService);
 
   username = this.authService.username;
+  sidebarOpen = signal(false);
+
+  toggleSidebar(): void {
+    this.sidebarOpen.update((open) => !open);
+  }
+
+  closeSidebar(): void {
+    this.sidebarOpen.set(false);
+  }
 
   async logout(): Promise<void> {
     const confirmado = await this.confirmService.open({
@@ -32,6 +41,7 @@ export class AdminLayoutComponent {
     }
 
     this.toastService.info('Sesion cerrada', 'Volviendo al acceso de administrador.');
+    this.closeSidebar();
     this.authService.logout();
   }
 }

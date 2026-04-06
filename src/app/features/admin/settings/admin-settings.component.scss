@@ -5,6 +5,11 @@
 
 .page-header {
   margin-bottom: 1.25rem;
+  padding: 1.15rem 1.25rem;
+  border-radius: 24px;
+  background: var(--surface-soft);
+  border: 1px solid var(--line-soft);
+  box-shadow: var(--shadow-lg);
 
   h1 {
     font-size: 1.6rem;
@@ -20,11 +25,50 @@
 }
 
 .settings-card {
+  position: relative;
   background: var(--surface-elevated);
   border-radius: 20px;
   padding: 2rem;
   box-shadow: var(--shadow-lg);
-  border: 1px solid var(--line-soft);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  overflow: hidden;
+}
+
+.settings-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 3px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--brand-300) 84%, white 16%),
+    var(--brand-500) 30%,
+    var(--accent-300) 68%,
+    color-mix(in srgb, var(--accent-500) 82%, white 18%)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.98;
+}
+
+:root[data-theme='dark'] .settings-card::before,
+body[data-theme='dark'] .settings-card::before {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--brand-300) 74%, white 26%),
+    color-mix(in srgb, var(--brand-500) 82%, white 18%) 30%,
+    color-mix(in srgb, var(--accent-300) 86%, white 14%) 68%,
+    color-mix(in srgb, var(--accent-500) 82%, white 18%)
+  );
 }
 
 .card-title {
@@ -63,6 +107,15 @@
   gap: 1.2rem;
 }
 
+.field {
+  display: grid;
+  gap: 0.45rem;
+  padding: 1rem;
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--surface-muted) 82%, transparent 18%);
+  border: 1px solid var(--line-soft);
+}
+
 .field-error {
   font-size: 0.8rem;
   color: var(--danger-500);
@@ -81,24 +134,33 @@
 .eye-btn {
   position: absolute;
   right: 0.75rem;
-  background: none;
-  border: none;
+  width: 2rem;
+  height: 2rem;
+  background: var(--surface-neutral-soft);
+  border: 1px solid var(--line-soft);
   cursor: pointer;
   color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  padding: 0.25rem;
-  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border-radius: 10px;
+  transition: background var(--ease-out), color var(--ease-out), transform var(--ease-out);
 
   svg { width: 20px; height: 20px; }
 }
 
-.eye-btn:hover { color: var(--brand-500); }
+.eye-btn:hover {
+  color: var(--brand-500);
+  background: var(--surface-accent-soft);
+  transform: translateY(-1px);
+}
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  padding-top: 0.5rem;
+  padding-top: 0.8rem;
+  margin-top: 0.35rem;
+  border-top: 1px solid var(--line-soft);
 }
 
 .btn-primary {
@@ -135,4 +197,43 @@
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 0;
+    max-width: none;
+  }
+
+  .page-header {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .settings-card {
+    padding: 1.2rem;
+    border-radius: 20px;
+  }
+
+  .field {
+    padding: 0.85rem;
+  }
+
+  .card-title {
+    align-items: flex-start;
+    font-size: 1rem;
+  }
+
+  .card-hint {
+    font-size: 0.88rem;
+  }
+
+  .form-actions {
+    justify-content: stretch;
+  }
+
+  .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
 }

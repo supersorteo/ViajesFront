@@ -45,14 +45,14 @@
         <tbody>
           @for (r of reservas(); track r.id) {
             <tr>
-              <td class="id">{{ r.id }}</td>
-              <td><strong>{{ r.destinoNombre }}</strong></td>
-              <td>{{ r.nombrePasajero }}</td>
-              <td class="email">{{ r.email }}</td>
-              <td class="center">
+              <td class="id" data-label="#">{{ r.id }}</td>
+              <td class="cell-wide" data-label="Destino"><strong>{{ r.destinoNombre }}</strong></td>
+              <td data-label="Pasajero">{{ r.nombrePasajero }}</td>
+              <td class="email cell-wide" data-label="Email">{{ r.email }}</td>
+              <td class="center" data-label="Asiento">
                 <span class="seat-badge">{{ r.numeroAsiento }}</span>
               </td>
-              <td>
+              <td class="cell-wide" data-label="Estado">
                 <select
                   class="estado-select"
                   [class]="estadoClass(r.estado)"
@@ -65,8 +65,8 @@
                   <option value="CANCELADA">Cancelada</option>
                 </select>
               </td>
-              <td class="date">{{ r.fechaCreacion | slice: 0 : 10 }}</td>
-              <td>
+              <td class="date" data-label="Fecha">{{ r.fechaCreacion | slice: 0 : 10 }}</td>
+              <td class="cell-wide action-cell" data-label="Acciones">
                 <div class="actions">
                   <button class="icon-btn delete" (click)="eliminar(r)" aria-label="Eliminar reserva">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
