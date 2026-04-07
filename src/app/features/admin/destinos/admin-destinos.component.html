@@ -207,14 +207,30 @@
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="field">
+      <div class="form-row time-row">
+        <div class="field time-field">
           <label for="horaSalida">Hora de salida</label>
-          <input id="horaSalida" type="time" formControlName="horaSalida" />
+          <div class="time-input-shell">
+            <span class="time-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 7v5l3 2"/>
+              </svg>
+            </span>
+            <input id="horaSalida" type="time" formControlName="horaSalida" />
+          </div>
         </div>
-        <div class="field">
+        <div class="field time-field">
           <label for="horaLlegada">Hora de llegada</label>
-          <input id="horaLlegada" type="time" formControlName="horaLlegada" />
+          <div class="time-input-shell">
+            <span class="time-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 7v5l3 2"/>
+              </svg>
+            </span>
+            <input id="horaLlegada" type="time" formControlName="horaLlegada" />
+          </div>
         </div>
       </div>
 
