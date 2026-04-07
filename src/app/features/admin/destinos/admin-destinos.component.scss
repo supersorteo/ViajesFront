@@ -394,7 +394,7 @@
   .data-table td {
     padding: 0.8rem 1rem;
     border: none;
-    text-align: left !important;
+    text-align: center !important;
   }
 
   .data-table td::before {
@@ -404,16 +404,25 @@
     color: var(--text-muted);
     font-size: 0.72rem;
     font-weight: 700;
+    text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
 
   .actions {
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .icon-btn {
     flex: 1 1 calc(33.33% - 0.3rem);
+  }
+
+  .thumb,
+  .thumb-placeholder,
+  .badge,
+  .toggle-btn {
+    margin-inline: auto;
   }
 
   .form-panel {

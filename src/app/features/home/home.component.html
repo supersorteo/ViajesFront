@@ -31,14 +31,9 @@
       </article>
 
       <article class="showcase-card showcase-card-side">
-        <span class="showcase-label">Salida recomendada</span>
-        @if (salidaMasEconomica(); as mejorSalida) {
-          <strong>${{ mejorSalida.precio | number }}</strong>
-          <p>{{ mejorSalida.nombre }} · {{ mejorSalida.horaSalida }}</p>
-        } @else {
-          <strong>Sin datos</strong>
-          <p>Activa un destino para mostrar sugerencias</p>
-        }
+        <span class="showcase-label">Reserva guiada</span>
+        <strong>Experiencia mas clara</strong>
+        <p>Consulta horarios, revisa disponibilidad y confirma asientos desde una portada mas profesional.</p>
       </article>
     </div>
   </section>
@@ -144,29 +139,29 @@
       </button>
     </div>
 
-  @if (cargando()) {
-    <div class="loading glass-card" role="status" aria-live="polite">
-      <div class="spinner" aria-hidden="true"></div>
-      <p>Cargando destinos...</p>
-    </div>
-  }
+    @if (cargando()) {
+      <div class="loading glass-card" role="status" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Cargando destinos...</p>
+      </div>
+    }
 
-  @if (error()) {
-    <div class="error-message glass-card" role="alert">
-      <p>{{ error() }}</p>
-    </div>
-  }
+    @if (error()) {
+      <div class="error-message glass-card" role="alert">
+        <p>{{ error() }}</p>
+      </div>
+    }
 
-  @if (!cargando() && !error()) {
-    <div class="cards-grid">
-      @for (destino of destinos(); track destino.id) {
-        <app-destino-card
-          [destino]="destino"
-          (seleccionar)="abrirPanel($event)"
-        />
-      }
-    </div>
-  }
+    @if (!cargando() && !error()) {
+      <div class="cards-grid">
+        @for (destino of destinos(); track destino.id) {
+          <app-destino-card
+            [destino]="destino"
+            (seleccionar)="abrirPanel($event)"
+          />
+        }
+      </div>
+    }
   </section>
 
   <section class="cta-banner glass-card">

@@ -7,15 +7,20 @@
   role="button"
 >
   <div class="card-image" [style.background-image]="'url(' + destino().imagenUrl + ')'"></div>
-  <div class="price-oval" [attr.aria-label]="'Precio: $' + destino().precio">
-    ${{ destino().precio | number }}
-  </div>
   <div class="card-content">
-    <div class="travel-date" aria-label="Fecha y hora de salida">
-      <span class="date-day">{{ destino().fechaSalida | date: 'dd' }}</span>
-      <span class="date-month">{{ destino().fechaSalida | date: 'MMM' }}</span>
-      <span class="date-time">{{ destino().horaSalida }}</span>
+    <div class="travel-meta">
+      <div class="travel-date" aria-label="Fecha y hora de salida">
+        <span class="date-day">{{ destino().fechaSalida | date: 'dd' }}</span>
+        <span class="date-month">{{ destino().fechaSalida | date: 'MMM' }}</span>
+        <span class="date-time">{{ destino().horaSalida }}</span>
+      </div>
+
+      <div class="price-chip" [attr.aria-label]="'Precio: $' + destino().precio">
+        <small>Desde</small>
+        <strong>${{ destino().precio | number }}</strong>
+      </div>
     </div>
+
     <h3>{{ destino().nombre }}</h3>
     <p>{{ destino().descripcion }}</p>
     <button class="btn-outline" type="button">
